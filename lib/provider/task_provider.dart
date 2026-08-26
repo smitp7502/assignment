@@ -9,10 +9,73 @@ class TaskProvider extends ChangeNotifier {
   List<TaskModel> _tasks = [];
   bool _isLoading = false;
   String? _error;
+  String _searchQuery = '';
+  int _selectedTab = 0;
 
   List<TaskModel> get tasks => [..._tasks];
   bool get isLoading => _isLoading;
   String? get error => _error;
+  String get searchQuery => _searchQuery;
+  int get selectedTab => _selectedTab;
+
+  List<TaskModel> get filteredTasks {
+    List<TaskModel> result = [..._tasks];
+    switch (_selectedTab) {
+      case 1:
+        result = result.where((task) => task.isCompleted).toList();
+        break;
+
+      case 2:
+        result = result.where((task) => !task.isCompleted).toList();
+        break;
+
+      default:
+        break;
+    }
+
+    if (_searchQuery.trim().isNotEmpty) {
+      final query = _searchQuery.trim().toLowerCase();
+
+      result = result.where((task) {
+        final title = task.title.toLowerCase();
+        final description = task.description?.toLowerCase() ?? '';
+        return title.contains(query) || description.contains(query);
+      }).toList();
+    }
+
+    return result;
+  }
+
+  Future<void> refreshTasks() async {
+    _error = null;
+
+    try {
+      final tasks = await _taskService.getTasks();
+      _tasks = tasks;
+      notifyListeners();
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+    }
+  }
+
+  void searchTasks(String query) {
+    _searchQuery = query;
+
+    notifyListeners();
+  }
+
+  void changeTab(int index) {
+    _selectedTab = index;
+
+    notifyListeners();
+  }
+
+  void clearSearch() {
+    _searchQuery = '';
+
+    notifyListeners();
+  }
 
   Future<void> fetchTasks() async {
     _isLoading = true;
@@ -44,7 +107,7 @@ class TaskProvider extends ChangeNotifier {
       );
 
       final createdTask = await _taskService.createTask(task);
-      _tasks.add(createdTask);
+      _tasks.insert(0, createdTask);
       notifyListeners();
     } catch (e) {
       _error = e.toString();
