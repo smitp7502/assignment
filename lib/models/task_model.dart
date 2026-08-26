@@ -16,17 +16,17 @@ class TaskModel {
   factory TaskModel.fromJson(Map<String, dynamic> json) {
     return TaskModel(
       title: json['title'] as String,
-      description: json['description'] as String?,
+      description: json['body'] as String?,
       userId: json['userId'] as int,
       id: json['id'] as int,
-      isCompleted: json['completed'] as bool,
+      isCompleted: json['completed'] as bool? ?? false,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'title': title,
-      'description': description,
+      'body': description,
       'userId': userId,
       'id': id,
       'completed': isCompleted,
