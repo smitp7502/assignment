@@ -1,17 +1,26 @@
-# assignment
+# Project structure
 
-A new Flutter project.
+- Models
+- Provider
+- Screens
+- Services
+- Widget
 
-## Getting Started
+# Flutter version : 3.41.6
 
-This project is a starting point for a Flutter application.
+# Packages are used in the app
 
-A few resources to get you started if this is your first Flutter project:
+- http (Rest API)
+- Provider (Statemanagement)
+  note : I do not have prior experience with GetX, so I have used Provider for state management in this assignment.
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+# API service contains the methode (Task service)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- getTask
+- deleteTask
+- updateTask
+- updateTask
+
+# Current API related info
+
+- Provided api's are the dummy api's so the data in it does not affect the real data so i update the data in the local data
